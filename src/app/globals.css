@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  font-family: var(--font-montserrat), var(--font-poppins), sans-serif;
+}
+
+.custom-dropShadow {
+  text-shadow: 5px 0px 2px rgba(255, 0, 255, 0.5),
+    -4px 0px 5px rgba(0, 255, 191, 0.5), 5px 0px 10px rgba(49, 122, 255, 1);
+}
+
+/* .custom-header-background {
+  background: radial-gradient(
+    circle,
+    rgba(51, 51, 51, 1) 0%,
+    rgba(0, 0, 0, 1) 100%
+  );
+} */
