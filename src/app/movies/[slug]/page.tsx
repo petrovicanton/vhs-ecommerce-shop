@@ -1,5 +1,3 @@
-"use client";
-
 import MovieDetailsClient from "@/components/MovieDetails/MovieDetailsClient";
 import MovieDetailsServer from "@/components/MovieDetails/MovieDetailsServer";
 
