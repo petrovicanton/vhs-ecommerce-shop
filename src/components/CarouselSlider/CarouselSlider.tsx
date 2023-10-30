@@ -46,6 +46,7 @@ const CarouselSlider: FC<CarouselSliderProps> = (props) => {
           className={`w-full h-full object-contain ${
             index !== currentImageIndex && "hidden"
           }`}
+          priority
         />
       ))}
 
