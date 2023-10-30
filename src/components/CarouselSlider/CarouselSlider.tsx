@@ -40,8 +40,8 @@ const CarouselSlider: FC<CarouselSliderProps> = (props) => {
         <Image
           key={image._key}
           src={image.url}
-          width={700}
-          height={700}
+          width={200}
+          height={200}
           alt={`Slide ${index + 1}`}
           className={`w-full h-full object-contain ${
             index !== currentImageIndex && "hidden"
