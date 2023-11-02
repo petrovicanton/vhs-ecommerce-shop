@@ -7,26 +7,16 @@ import { RiLoginBoxLine } from "react-icons/ri";
 import { toggleCart } from "@/redux/features/cartSlice";
 import useCartTotals from "@/hooks/useCartTotals";
 import SignUp from "../SignUp/SignUp";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { signIn, useSession, signOut } from "next-auth/react";
 
 const Header = () => {
-  const {
-    header,
-    container,
-    logoContainer,
-    link,
-    logo,
-    nav,
-    ul,
-    orders,
-    signupBtn,
-    signinBtn,
-    logoutBtn,
-    cart,
-  } = headerClassNames;
+  const { link, signupBtn, signinBtn, logoutBtn, cart } = headerClassNames;
 
   const [isSignUpFormOpen, setIsSignUpFormOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(0); // Initialize to 0 initially
+
   const { status, data: session } = useSession({
     required: true,
     onUnauthenticated() {
@@ -50,21 +40,60 @@ const Header = () => {
     }
   };
 
+  useEffect(() => {
+    function handleResize() {
+      setWindowWidth(window.innerWidth);
+    }
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (windowWidth >= 640) {
+      setIsMobileMenuOpen(false);
+    }
+  }, [windowWidth]);
+
   return (
     <>
       <SignUp isSignUpFormOpen={isSignUpFormOpen} toggleForm={toggleForm} />
-      <header className={header}>
-        <div className={container}>
-          <Link href="/" className={logoContainer}>
-            <h1 className={logo}>
-              Retro
-              <br /> Movie
-              <br /> Mall
-            </h1>
-          </Link>
+      <header className={`fixed w-full top-0 left-0 z-20 bg-transparent`}>
+        <div className="container mx-auto py-4 px-6 flex items-center justify-between">
+          <div className="flex items-center">
+            <Link
+              href="/"
+              className={`text-center font-bold text-xl hover:text-primary-light text-white`}
+            >
+              <h1>
+                Retro
+                <br /> Movie
+                <br /> Mall
+              </h1>
+            </Link>
+          </div>
 
-          <nav className={nav}>
-            <ul className={ul}>
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className={`sm:hidden text-white bg-transparent`}
+          >
+            ☰
+          </button>
+
+          <nav
+            className={`sm:flex md:flex-row ${
+              isMobileMenuOpen ? "block" : "hidden"
+            }`}
+          >
+            <ul
+              className={`flex ${
+                isMobileMenuOpen
+                  ? "flex-col space-y-2 items-center"
+                  : "space-x-6"
+              }`}
+            >
               <li>
                 <button onClick={() => dispatch(toggleCart())} className={link}>
                   <span>
@@ -74,22 +103,29 @@ const Header = () => {
                   <div className={cart}>{totalQuantity}</div>
                 </button>
               </li>
-              <li className="flex items-center justify-center h-7">
-                {session?.user && (
-                  <>
-                    <Link href="/orders/#currentOrder" className={orders}>
-                      Orders
+              {session?.user ? (
+                <>
+                  <li>
+                    <Link href="/orders/#currentOrder">
+                      <button className="bg-VHSred ml-4 flex hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                        Orders
+                      </button>
                     </Link>
+                  </li>
+                  <li>
                     <button onClick={() => signOut()} className={logoutBtn}>
                       Logout
                     </button>
-                  </>
-                )}
-                {!session?.user && (
-                  <>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li>
                     <button onClick={toggleForm} className={signupBtn}>
                       Sign Up
                     </button>
+                  </li>
+                  <li>
                     <button onClick={signInHandler} className={signinBtn}>
                       Sign In
                       <RiLoginBoxLine
@@ -101,9 +137,9 @@ const Header = () => {
                         className={link}
                       />
                     </button>
-                  </>
-                )}
-              </li>
+                  </li>
+                </>
+              )}
             </ul>
           </nav>
         </div>
