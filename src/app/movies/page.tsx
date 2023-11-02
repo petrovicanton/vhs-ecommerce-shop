@@ -73,7 +73,7 @@ const Movies: React.FC = () => {
           placeholder="Search movies"
           value={searchQuery}
           onChange={handleSearch}
-          className="p-2 m-2 rounded border border-gray-300 text-black w-[25%]"
+          className="p-2 m-2 rounded border border-gray-300 text-black w-4/5 md:w-[25%]"
         />
 
         <div className="py-4">
