@@ -16,7 +16,7 @@
     "bcrypt": "^5.1.1",
     "mongodb": "^5.0.0",
     "next": "13.5.4",
-    "next-auth": "^4.23.2",
+    "next-auth": "^4.24.5",
     "next-sanity-client": "^1.0.7",
     "react": "^18",
     "react-dom": "^18",
